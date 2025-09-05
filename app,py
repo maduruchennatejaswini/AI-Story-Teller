@@ -1,0 +1,20 @@
+import streamlit as st
+from transformers import pipeline
+
+# Load the Hugging Face text generation pipeline
+generator = pipeline("text-generation", model="gpt2")
+
+st.title("📖 AI Story Teller")
+st.write("Tell me an idea, and I will create a short story for you ✨")
+
+# Input from user
+user_input = st.text_area("Enter your story idea:")
+
+if st.button("Generate Story"):
+    if user_input.strip() == "":
+        st.warning("⚠️ Please enter a story idea.")
+    else:
+        # Generate story
+        story = generator(user_input, max_length=150, num_return_sequences=1, do_sample=True, temperature=0.7)
+        st.subheader("Here’s your AI-generated story:")
+        st.write(story[0]['generated_text'])
